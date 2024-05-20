@@ -1,0 +1,129 @@
+{# @var plugin \contentreactor\shipping\time\Plugin #}
+{# @var settings \contentreactor\shipping\time\models\Settings #}
+
+{% extends "_layouts/cp" %}
+{% import '_includes/forms' as forms %}
+{% set title = 'Content Reactor Shipping Time' %}
+{% set docTitle = 'Content Reactor Shipping Time' %}
+{% set fullPageForm = true %}
+
+{% set conutry = {
+    'AT': 'Austria',
+    'DE': 'Germany', 
+} %}
+
+{% set options = {
+    '': 'Empty',
+    'AT': 'Austria',
+    'DE': 'Germany',
+} %}
+
+{% set crumbs = [
+    { label: "Settings"|t('app'), url: url('settings') },
+    { label: "Plugins"|t('app'), url: url('settings/plugins') }
+] %}
+
+{% if settings is not defined %}
+    {% set settings = craft.app.projectConfig.get('contentreactor-shipping-time') %}
+    {% set freshSettings = true %}
+{% else %}
+    {% set freshSettings = false %}
+{% endif %}
+
+{% block content %}
+    <div class="cp-container">
+        <h1> {{ 'Public Holidays API settings'|t('contentreactor-shipping-time') }} </h1>
+        <form method="post" accept-charset="UTF-8">
+            {{ csrfInput() }}
+            {{ actionInput('contentreactor-shipping-time/settings/save-settings') }}
+            {{ redirectInput('contentreactor-shipping-time/settings') }}
+
+            <h2>{{ 'Country ISO Code'|t('contentreactor-shipping-time') }}</h2>
+            <p>{{ 'ISO 3166-1 code of the country - Example : DE'|t('contentreactor-shipping-time') }} </p>
+
+            {{ forms.select({
+                first: true,
+                id: 'countryIsoCode',
+                name: 'countryIsoCode',
+                autofocus: true,
+                required: true,
+                errors: (freshSettings ? null : settings.getErrors('countryIsoCode')),
+                options: conutry,
+                value: settings.countryIsoCode ?? '',
+            }) }}
+
+            <h2>{{ 'Language ISO Code'|t('contentreactor-shipping-time') }}</h2>
+            <p>{{ 'ISO-639-1 code of a language or empty - Example : DE'|t('contentreactor-shipping-time') }} </p>
+
+            {{ forms.select({
+                first: true,
+                id: 'languageIsoCode',
+                name: 'languageIsoCode',
+                autofocus: true,
+                errors: (freshSettings ? null : settings.getErrors('languageIsoCode')),
+                options: options,
+                value: settings.languageIsoCode ?? '',
+            }) }}
+
+            <h2>{{ 'Subdivision Code'|t('contentreactor-shipping-time') }}</h2>
+            <p>{{ 'Code of the subdivision or empty - Example : DE-BE'|t('contentreactor-shipping-time') }} </p>
+
+            {{ forms.select({
+                first: true,
+                id: 'subdivisionCode',
+                name: 'subdivisionCode',
+                autofocus: true,
+                errors: (freshSettings ? null : settings.getErrors('subdivisionCode')),
+                options: options,
+                value: settings.subdivisionCode ?? '',
+            }) }}
+
+            <hr />
+
+            <h2>{{ 'Custom message'|t('contentreactor-shipping-time') }}</h2>
+            <p>{{ 'Use the {days} token to specify where the number of days will be displayed in your message.'|t('contentreactor-shipping-time') }} </p>
+            <p>{{ 'Example: "In stock. Delivery in {days} days"'|t('contentreactor-shipping-time') }} </p>
+            {{ forms.text({
+                first: true,
+                id: 'customMessage',
+                name: 'customMessage',
+                autofocus: true,
+                errors: (freshSettings ? null : settings.getErrors('customMessage')),
+                options: options,
+                value: settings.customMessage ?? '',
+            }) }}
+
+            <h2>{{ 'Days'|t('contentreactor-shipping-time') }}</h2>
+            <p>{{ 'How many days will be calculated from the current date to check if holidays exist within that period.'|t('contentreactor-shipping-time') }} </p>
+            <p>{{ 'Correct values: "+ 1 day", "+ 3 days", "+ 1 week", "+ 3 weeks"'|t('contentreactor-shipping-time') }} </p>
+            
+            {{ forms.text({
+                first: true,
+                id: 'daysCount',
+                name: 'daysCount',
+                autofocus: true,
+                errors: (freshSettings ? null : settings.getErrors('daysCount')),
+                options: options,
+                value: settings.daysCount ?? '',
+            }) }}
+
+            <h2>{{ 'Holiday days'|t('contentreactor-shipping-time') }}</h2>
+            <p>{{ 'How many days will be applied if holidays exist within a certain period?'|t('contentreactor-shipping-time') }} </p>
+            <p>{{ 'Correct values: "1", "3", "20", "40"'|t('contentreactor-shipping-time') }} </p>
+            
+            {{ forms.text({
+                first: true,
+                id: 'holidayDays',
+                name: 'holidayDays',
+                autofocus: true,
+                errors: (freshSettings ? null : settings.getErrors('holidayDays')),
+                options: options,
+                value: settings.holidayDays ?? '',
+            }) }}
+
+            <br />
+            <br />
+            <button type="submit" class="btn submit">{{ 'Save Settings'|t('contentreactor-shipping-time') }}</button>
+        </form>
+    </div>
+{% endblock %}
