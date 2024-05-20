@@ -1,32 +1,31 @@
 # Content Reactor Shipping Time
 
-### Public Holidays API Configuration
-This configuration guide will help you set up the Public Holidays API by specifying various parameters such as country codes, language codes, and custom messages. Follow the instructions below to ensure proper configuration:
+This configuration guide will help you set up the Content Reactor Shipping Time plugin by specifying various parameters such as country codes, language codes, and custom messages. Follow the instructions below to ensure proper configuration:
 
 ### 1. Country ISO Code
-Description: The ISO 3166-1 code of the country for which you want to retrieve public holiday data.
+The ISO 3166-1 code of the country for which you want to retrieve public holiday data.
 ```bash
 Example: DE (for Germany)
 ```
 This field is required.
 ### 2. Language ISO Code
-Description: The ISO 639-1 code of the language in which the API response should be returned. If left empty, the default language will be used.
+The ISO 639-1 code of the language in which the API response should be returned. If left empty, the default language will be used.
 ```bash
 Example: DE (for German)
 ```
 Leave this field empty if you do not want to specify a language.
 ### 3. Subdivision Code
-Description: The code of the subdivision (such as a state or province) for which you want to retrieve public holiday data. If left empty, the API will return holidays for the entire country.
+The code of the subdivision (such as a state or province) for which you want to retrieve public holiday data. If left empty, the API will return holidays for the entire country.
 Example: DE-BE (for Berlin, Germany)
 Leave this field empty if you do not want to specify a subdivision.
 ### 4. Custom Message
-Description: A customizable message that includes a placeholder for the number of days until a holiday. Use the {days} token to specify where the number of days will appear in the message.
+A customizable message that includes a placeholder for the number of days until a holiday. Use the {days} token to specify where the number of days will appear in the message.
 ```bash
 # token {days} - Number of days until a holiday
 Example: "In stock. Delivery in {days} days"
 ```
 ### 5. Days
-Description: Specifies the period from the current date within which the API should check for public holidays. The value should indicate the number of days, weeks, or a combination of both.
+Specifies the period from the current date within which the API should check for public holidays. The value should indicate the number of days, weeks, or a combination of both.
 ```bash
 # Correct Values:
 "+ 1 day"
@@ -35,7 +34,7 @@ Description: Specifies the period from the current date within which the API sho
 "+ 3 weeks"
 ```
 ### 6. Holiday Days
-Description: Specifies the number of holiday days to apply if holidays exist within the specified period.
+Specifies the number of holiday days to apply if holidays exist within the specified period.
 ```bash
 # Correct Values:
 "1"
@@ -46,6 +45,14 @@ Description: Specifies the number of holiday days to apply if holidays exist wit
 
 ## TLDR; 
 Calculation of shipping time during holidays and non-holiday periods.
+
+## Usage
+Once the plugin is installed, you can display your custom message with the calculated shipping time. 
+
+```bash
+# This will print out the custom message with the calculated shipping time, can be used in any other template.
+{{ calculateShippingTime }}
+```
 
 ## Requirements
 
